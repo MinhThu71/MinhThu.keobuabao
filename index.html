@@ -231,7 +231,7 @@
         </div>
 
         <!-- Thống kê tổng -->
-        <div class="stats-grid" aria-label="Thống kê tổng">
+        <div class="stats-grid" aria-label="Thống kê tổng" style="grid-template-columns:repeat(4,1fr)">
           <div class="stat-box">
             <div class="stat-val" id="total-games">0</div>
             <div class="stat-lbl" data-i18n="totalGames">Tổng ván</div>
@@ -243,6 +243,10 @@
           <div class="stat-box">
             <div class="stat-val" id="total-losses" style="color:var(--danger)">0</div>
             <div class="stat-lbl" data-i18n="losses">Thua</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val" id="total-draws" style="color:var(--warning)">0</div>
+            <div class="stat-lbl" data-i18n="draws">Hòa</div>
           </div>
         </div>
       </div>
