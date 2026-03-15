@@ -1,0 +1,102 @@
+<!-- Biểu tượng SVG cho game Kéo–Búa–Bao -->
+<!-- Sử dụng sprite SVG với các symbol id: icon-scissors, icon-rock, icon-paper -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+
+  <!-- Kéo (Scissors) -->
+  <symbol id="icon-scissors" viewBox="0 0 64 64">
+    <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <!-- Lưỡi kéo trái -->
+      <path d="M32 32 L14 12" stroke-width="4"/>
+      <path d="M32 32 L10 42" stroke-width="4"/>
+      <!-- Lưỡi kéo phải -->
+      <path d="M32 32 L50 12" stroke-width="4"/>
+      <path d="M32 32 L54 42" stroke-width="4"/>
+      <!-- Vòng tròn tay cầm trái -->
+      <circle cx="10" cy="48" r="6" stroke-width="3" fill="currentColor" opacity="0.2"/>
+      <circle cx="10" cy="48" r="6" stroke-width="3"/>
+      <!-- Vòng tròn tay cầm phải -->
+      <circle cx="54" cy="48" r="6" stroke-width="3" fill="currentColor" opacity="0.2"/>
+      <circle cx="54" cy="48" r="6" stroke-width="3"/>
+      <!-- Chốt giữa -->
+      <circle cx="32" cy="32" r="3" fill="currentColor"/>
+    </g>
+  </symbol>
+
+  <!-- Búa / Đá (Rock) -->
+  <symbol id="icon-rock" viewBox="0 0 64 64">
+    <g fill="currentColor">
+      <!-- Bàn tay nắm lại -->
+      <rect x="10" y="28" width="44" height="22" rx="8" ry="8" opacity="0.9"/>
+      <!-- Ngón tay cuộn -->
+      <rect x="14" y="18" width="10" height="16" rx="5" ry="5"/>
+      <rect x="27" y="14" width="10" height="18" rx="5" ry="5"/>
+      <rect x="40" y="18" width="10" height="16" rx="5" ry="5"/>
+      <!-- Ngón cái -->
+      <ellipse cx="10" cy="36" rx="6" ry="5" transform="rotate(-20 10 36)"/>
+    </g>
+  </symbol>
+
+  <!-- Bao / Giấy (Paper) -->
+  <symbol id="icon-paper" viewBox="0 0 64 64">
+    <g fill="currentColor">
+      <!-- Lòng bàn tay -->
+      <rect x="12" y="30" width="40" height="24" rx="6" ry="6" opacity="0.9"/>
+      <!-- Ngón trỏ -->
+      <rect x="14" y="10" width="9" height="26" rx="4" ry="4"/>
+      <!-- Ngón giữa -->
+      <rect x="26" y="8" width="9" height="26" rx="4" ry="4"/>
+      <!-- Ngón áp út -->
+      <rect x="38" y="10" width="9" height="26" rx="4" ry="4"/>
+      <!-- Ngón út -->
+      <rect x="50" y="18" width="7" height="18" rx="3" ry="3"/>
+      <!-- Ngón cái -->
+      <ellipse cx="10" cy="38" rx="5" ry="7" transform="rotate(10 10 38)"/>
+    </g>
+  </symbol>
+
+  <!-- Biểu tượng logo game -->
+  <symbol id="icon-logo" viewBox="0 0 40 40">
+    <circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" stroke-width="2"/>
+    <text x="20" y="26" text-anchor="middle" font-size="18" font-weight="bold" fill="currentColor">✊</text>
+  </symbol>
+
+  <!-- Dấu chấm hỏi (Help) -->
+  <symbol id="icon-help" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <circle cx="12" cy="17" r="1" fill="currentColor"/>
+  </symbol>
+
+  <!-- Mặt trời (Light theme) -->
+  <symbol id="icon-sun" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="4" fill="currentColor"/>
+    <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- Mặt trăng (Dark theme) -->
+  <symbol id="icon-moon" viewBox="0 0 24 24">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="currentColor"/>
+  </symbol>
+
+  <!-- Âm thanh bật -->
+  <symbol id="icon-sound-on" viewBox="0 0 24 24">
+    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"/>
+    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- Âm thanh tắt -->
+  <symbol id="icon-sound-off" viewBox="0 0 24 24">
+    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"/>
+    <line x1="23" y1="9" x2="17" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <line x1="17" y1="9" x2="23" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- Trophy (thắng) -->
+  <symbol id="icon-trophy" viewBox="0 0 24 24">
+    <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M4 22h16M8 22v-4M16 22v-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M18 2H6v7a6 6 0 0 0 12 0V2z" fill="currentColor" opacity="0.8"/>
+  </symbol>
+
+</svg>
