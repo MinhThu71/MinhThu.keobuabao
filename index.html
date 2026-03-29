@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Game Kéo–Búa–Bao với AI thích nghi, nhiều chế độ chơi và giao diện hiện đại." />
+  <meta name="theme-color" content="#0f172a" />
+
+  <title>Kéo–Búa–Bao 🎮</title>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.webmanifest" />
+
+  <!-- CSS chính -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <!-- SVG Sprite (nhúng inline để dùng <use href="#icon-..."> cùng origin) -->
+  <div id="svg-sprite" style="display:none" aria-hidden="true"></div>
+
+  <!-- Live region cho screen reader (thông báo kết quả) -->
+  <div id="live-region" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Confetti container -->
+  <div id="confetti-container" aria-hidden="true"></div>
+
+  <!-- ═══════════════ HEADER ═══════════════ -->
+  <header class="app-header" role="banner">
+    <a href="#main" class="header-brand" aria-label="Kéo–Búa–Bao – Trang chủ">
+      <div class="brand-logo" aria-hidden="true">✊</div>
+      <span class="brand-title">Kéo–Búa–Bao</span>
+    </a>
+
+    <nav class="header-controls" aria-label="Điều khiển giao diện">
+      <!-- Nút đổi giao diện Sáng/Tối -->
+      <button
+        id="btn-theme"
+        class="icon-btn"
+        type="button"
+        title="Đổi giao diện"
+        aria-label="Đổi giao diện sáng/tối"
+      >☀️</button>
+
+      <!-- Nút đổi ngôn ngữ -->
+      <button
+        id="btn-lang"
+        class="icon-btn"
+        type="button"
+        title="Switch language"
+        aria-label="Switch language / Đổi ngôn ngữ"
+      >EN</button>
+
+      <!-- Nút trợ giúp / phím tắt -->
+      <button
+        id="btn-help"
+        class="icon-btn"
+        type="button"
+        title="Trợ giúp & Phím tắt"
+        aria-label="Trợ giúp và phím tắt"
+        aria-haspopup="dialog"
+      >?</button>
+    </nav>
+  </header>
+
+  <!-- ═══════════════ MAIN ═══════════════ -->
+  <main id="main" class="app-main" role="main">
+
+    <!-- ─── Cột trái: Khu vực chơi ─── -->
+    <section class="play-area" aria-label="Khu vực chơi">
+
+      <!-- Thông tin vòng đấu & chế độ -->
+      <div class="card round-header">
+        <div class="round-info-wrap">
+          <span id="round-info" aria-live="polite" aria-label="Thông tin vòng">Vòng 0/1</span>
+        </div>
+        <!-- Đếm ngược -->
+        <div id="countdown" class="hidden" aria-live="assertive" aria-label="Đếm ngược"></div>
+      </div>
+
+      <!-- Khu vực hiển thị kết quả hai bên -->
+      <div class="card">
+        <div class="result-area" aria-label="Kết quả lượt chơi">
+          <!-- Thẻ Người chơi -->
+          <div
+            id="player-card"
+            class="result-card"
+            role="img"
+            aria-label="Lựa chọn của bạn"
+          >
+            <span class="card-label" data-i18n="player">Bạn</span>
+          </div>
+
+          <!-- VS -->
+          <div class="vs-divider" aria-hidden="true">VS</div>
+
+          <!-- Thẻ AI -->
+          <div
+            id="ai-card"
+            class="result-card"
+            role="img"
+            aria-label="Lựa chọn của máy"
+          >
+            <span class="card-label" data-i18n="ai">Máy</span>
+          </div>
+        </div>
+
+        <!-- Banner kết quả -->
+        <div
+          id="result-banner"
+          class="hidden"
+          role="status"
+          aria-live="polite"
+        ></div>
+      </div>
+
+      <!-- Các nút lựa chọn -->
+      <div class="card">
+        <div
+          class="choice-buttons"
+          role="group"
+          aria-label="Chọn nước đi của bạn"
+        >
+          <!-- Kéo (Scissors) -->
+          <button
+            class="choice-btn"
+            data-choice="scissors"
+            type="button"
+            aria-label="Kéo (phím 1)"
+          >
+            <svg class="btn-icon" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+              <g fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                <ellipse cx="22" cy="22" rx="12" ry="8"/>
+                <ellipse cx="22" cy="78" rx="12" ry="8"/>
+                <line x1="33" y1="22" x2="80" y2="55"/>
+                <line x1="33" y1="78" x2="80" y2="45"/>
+                <circle cx="58" cy="50" r="4" fill="currentColor"/>
+              </g>
+            </svg>
+            <span class="btn-label" data-i18n="scissors">Kéo</span>
+            <kbd class="btn-shortcut" aria-hidden="true">1</kbd>
+          </button>
+
+          <!-- Búa (Rock) -->
+          <button
+            class="choice-btn"
+            data-choice="rock"
+            type="button"
+            aria-label="Búa (phím 2)"
+          >
+            <svg class="btn-icon" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+              <g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="20" y="42" width="60" height="36" rx="12"/>
+                <rect x="26" y="27" width="11" height="20" rx="5.5"/>
+                <rect x="41" y="22" width="11" height="25" rx="5.5"/>
+                <rect x="56" y="25" width="11" height="22" rx="5.5"/>
+                <path d="M20 58 Q11 53 14 42 Q17 33 26 37"/>
+              </g>
+            </svg>
+            <span class="btn-label" data-i18n="rock">Búa</span>
+            <kbd class="btn-shortcut" aria-hidden="true">2</kbd>
+          </button>
+
+          <!-- Bao (Paper) -->
+          <button
+            class="choice-btn"
+            data-choice="paper"
+            type="button"
+            aria-label="Bao (phím 3)"
+          >
+            <svg class="btn-icon" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+              <g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="28" y="58" width="44" height="30" rx="8"/>
+                <rect x="30" y="20" width="10" height="42" rx="5"/>
+                <rect x="44" y="16" width="10" height="46" rx="5"/>
+                <rect x="58" y="20" width="10" height="42" rx="5"/>
+                <path d="M28 74 Q16 70 16 60 Q16 52 24 52 L28 54"/>
+              </g>
+            </svg>
+            <span class="btn-label" data-i18n="paper">Bao</span>
+            <kbd class="btn-shortcut" aria-hidden="true">3</kbd>
+          </button>
+        </div>
+      </div>
+
+    </section>
+    <!-- ─── end play-area ─── -->
+
+    <!-- ─── Cột phải: Sidebar ─── -->
+    <aside class="sidebar" aria-label="Thông tin và cài đặt">
+
+      <!-- Bảng điểm -->
+      <div class="card scoreboard" aria-label="Bảng điểm">
+        <h2 data-i18n="scoreTitle">Điểm số</h2>
+
+        <div class="score-display" aria-label="Điểm hiện tại">
+          <div class="score-block player-score">
+            <span class="score-name" id="label-player">Bạn</span>
+            <span class="score-num" id="score-player" aria-label="Điểm bạn">0</span>
+          </div>
+          <span class="score-sep" aria-hidden="true">:</span>
+          <div class="score-block ai-score">
+            <span class="score-name" id="label-ai">Máy</span>
+            <span class="score-num" id="score-ai" aria-label="Điểm máy">0</span>
+          </div>
+        </div>
+
+        <!-- Thanh tiến trình -->
+        <div class="progress-wrap" aria-label="Tiến trình">
+          <div class="progress-label">
+            <span data-i18n="player">Bạn</span>
+            <span>Mục tiêu: <strong class="target-score">1</strong></span>
+          </div>
+          <div class="progress-row">
+            <span class="progress-row-label" data-i18n="player" aria-hidden="true">Bạn</span>
+            <div class="progress-track" role="progressbar" aria-label="Tiến trình bạn">
+              <div id="progress-player" class="progress-fill player" style="width:0%"></div>
+            </div>
+          </div>
+          <div class="progress-row">
+            <span class="progress-row-label" data-i18n="ai" aria-hidden="true">Máy</span>
+            <div class="progress-track" role="progressbar" aria-label="Tiến trình máy">
+              <div id="progress-ai" class="progress-fill ai" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Thống kê tổng -->
+        <div class="stats-grid" aria-label="Thống kê tổng" style="grid-template-columns:repeat(4,1fr)">
+          <div class="stat-box">
+            <div class="stat-val" id="total-games">0</div>
+            <div class="stat-lbl" data-i18n="totalGames">Tổng ván</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val" id="total-wins" style="color:var(--success)">0</div>
+            <div class="stat-lbl" data-i18n="wins">Thắng</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val" id="total-losses" style="color:var(--danger)">0</div>
+            <div class="stat-lbl" data-i18n="losses">Thua</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val" id="total-draws" style="color:var(--warning)">0</div>
+            <div class="stat-lbl" data-i18n="draws">Hòa</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lịch sử -->
+      <div class="card history-panel" aria-label="Lịch sử gần nhất">
+        <h3 data-i18n="historyTitle">Lịch sử gần nhất</h3>
+        <ul id="history-list" aria-label="Danh sách lượt đã chơi">
+          <li class="history-empty">Chưa có lượt nào</li>
+        </ul>
+      </div>
+
+      <!-- Cài đặt & điều khiển -->
+      <div class="card controls-panel" aria-label="Cài đặt">
+        <h3 data-i18n="settingsTitle">Cài đặt</h3>
+
+        <!-- Chế độ chơi -->
+        <div class="control-row">
+          <label for="mode-select" data-i18n="labelMode">Chế độ chơi</label>
+          <select id="mode-select" aria-label="Chọn chế độ chơi">
+            <option value="quick" data-i18n="modeQuick">Chơi nhanh</option>
+            <option value="bo3" data-i18n="modeBo3">Best of 3</option>
+            <option value="bo5" data-i18n="modeBo5">Best of 5</option>
+            <option value="firstToN" data-i18n="modeFirstN">First to N</option>
+          </select>
+        </div>
+
+        <!-- First-to-N -->
+        <div id="first-to-n-wrap" class="control-row hidden">
+          <label for="first-to-n-input" data-i18n="labelTarget">Số điểm mục tiêu (N)</label>
+          <input
+            id="first-to-n-input"
+            type="number"
+            min="2"
+            max="10"
+            value="3"
+            aria-label="Nhập số điểm mục tiêu từ 2 đến 10"
+          />
+        </div>
+
+        <!-- Độ khó AI -->
+        <div class="control-row">
+          <label for="difficulty-select" data-i18n="labelDiff">Độ khó AI</label>
+          <select id="difficulty-select" aria-label="Chọn độ khó AI">
+            <option value="easy" data-i18n="diffEasy">Dễ</option>
+            <option value="medium" data-i18n="diffMedium" selected>Vừa</option>
+            <option value="hard" data-i18n="diffHard">Khó</option>
+          </select>
+        </div>
+
+        <!-- Các nút hành động -->
+        <div class="action-btns" role="group" aria-label="Hành động">
+          <button id="btn-reset-series" class="action-btn" type="button" aria-label="Chơi lại vòng (phím R)">
+            🔄 <span data-i18n="btnReset">Chơi lại vòng</span>
+          </button>
+          <button id="btn-clear-all" class="action-btn danger" type="button" aria-label="Đặt lại toàn bộ dữ liệu">
+            🗑️ <span data-i18n="btnClear">Đặt lại tất cả</span>
+          </button>
+          <button id="btn-sound" class="action-btn" type="button" aria-label="Bật/Tắt âm thanh (phím M)">
+            🔊 <span data-i18n="btnSound">Âm thanh</span>
+          </button>
+          <button id="btn-fx" class="action-btn" type="button" aria-label="Bật/Tắt hiệu ứng">
+            ✨ <span data-i18n="btnFx">Hiệu ứng</span>
+          </button>
+        </div>
+      </div>
+
+    </aside>
+    <!-- ─── end sidebar ─── -->
+
+  </main>
+
+  <!-- ═══════════════ FOOTER ═══════════════ -->
+  <footer class="app-footer" role="contentinfo">
+    <span id="footer-text">© 2025 Kéo–Búa–Bao · v1.0</span>
+    <span id="shortcut-hint" aria-label="Phím tắt nhanh">Phím tắt: 1/2/3=Chọn · R=Lại · M=Âm · T=Giao diện</span>
+  </footer>
+
+  <!-- ═══════════════ MODALS ═══════════════ -->
+
+  <!-- Modal kết thúc loạt -->
+  <div
+    id="series-modal"
+    class="modal-overlay hidden"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="series-modal-title"
+    aria-hidden="true"
+  >
+    <div class="modal-box">
+      <h2 id="series-modal-title">🏆 Kết thúc loạt!</h2>
+      <p id="series-modal-msg">Bạn thắng loạt này!</p>
+      <div class="modal-btns">
+        <button id="series-modal-btn" class="btn-primary" type="button">Chơi lại</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal xác nhận đặt lại -->
+  <div
+    id="confirm-modal"
+    class="modal-overlay hidden"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="confirm-title"
+    aria-hidden="true"
+  >
+    <div class="modal-box">
+      <h2 id="confirm-title">⚠️ Xác nhận</h2>
+      <p id="confirm-modal-msg">Xóa toàn bộ điểm và lịch sử?</p>
+      <div class="modal-btns">
+        <button id="confirm-ok" class="btn-primary danger" type="button">Đặt lại</button>
+        <button id="confirm-cancel" class="btn-secondary" type="button">Hủy</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Trợ giúp & Phím tắt -->
+  <div
+    id="help-modal"
+    class="modal-overlay help-modal hidden"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="help-title"
+    aria-hidden="true"
+  >
+    <div class="modal-box">
+      <h2 id="help-title">⌨️ Phím tắt & Hướng dẫn</h2>
+
+      <table class="shortcut-table" aria-label="Danh sách phím tắt">
+        <thead>
+          <tr><th>Phím</th><th>Hành động</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><kbd>1</kbd></td><td>Chọn Kéo ✌️</td></tr>
+          <tr><td><kbd>2</kbd></td><td>Chọn Búa ✊</td></tr>
+          <tr><td><kbd>3</kbd></td><td>Chọn Bao 🖐️</td></tr>
+          <tr><td><kbd>R</kbd></td><td>Chơi lại vòng</td></tr>
+          <tr><td><kbd>M</kbd></td><td>Bật/Tắt âm thanh</td></tr>
+          <tr><td><kbd>T</kbd></td><td>Đổi giao diện Sáng/Tối</td></tr>
+          <tr><td><kbd>Esc</kbd></td><td>Đóng hộp thoại</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:0.82rem;color:var(--muted);margin-bottom:1rem;">
+        <strong>Luật chơi:</strong> Kéo ✌️ thắng Bao 🖐️ · Bao 🖐️ thắng Búa ✊ · Búa ✊ thắng Kéo ✌️
+      </p>
+
+      <div class="modal-btns">
+        <button id="help-modal-close" class="btn-primary" type="button">Đóng</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ SCRIPTS ═══════════════ -->
+  <!-- Tải SVG sprite động để dùng <use> hoạt động cả khi mở file:// -->
+  <script>
+    // Nhúng SVG sprite vào DOM để <use href="assets/icons.svg#..."> hoạt động offline
+    fetch('assets/icons.svg')
+      .then(r => r.text())
+      .then(svg => {
+        document.getElementById('svg-sprite').innerHTML = svg;
+      })
+      .catch(() => {}); // Bỏ qua lỗi (không cần thiết nếu dùng file trực tiếp)
+  </script>
+
+  <!-- Module chính -->
+  <script type="module" src="app.js"></script>
+
+  <!-- Service Worker cho PWA -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
